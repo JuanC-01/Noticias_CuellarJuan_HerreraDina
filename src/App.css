@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #ffffff;
+
+}
+
+.slick-prev,
+.slick-next {
+  font-size: 30px !important;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.slick-prev {
+  left: 25px !important;
+}
+
+.slick-next {
+  right: 25px !important;
+}
+
+.slick-prev::before,
+.slick-next::before {
+  font-size: 30px !important;
+  color: white !important;
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
+}
+
+@media (max-width: 600px) {
+
+  .slick-prev,
+  .slick-next {
+    display: none !important;
+  }
+}
