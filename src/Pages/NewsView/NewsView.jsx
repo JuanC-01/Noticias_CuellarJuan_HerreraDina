@@ -10,7 +10,6 @@ const NewsView = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { id } = useParams();
-
     useEffect(() => {
         const fetchNews = async () => {
             setLoading(true);
@@ -30,7 +29,6 @@ const NewsView = () => {
         };
         fetchNews();
     }, [id]);
-
     const formatFecha = (timestamp) => {
         if (timestamp && timestamp.toDate) {
             return timestamp.toDate().toLocaleString('es-ES', {
@@ -40,12 +38,10 @@ const NewsView = () => {
         }
         return 'Fecha no disponible';
     };
-
     const capitalizar = (str) => {
         if (!str) return '';
         return str.charAt(0).toUpperCase() + str.slice(1);
     };
-
     if (loading) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
@@ -53,7 +49,6 @@ const NewsView = () => {
             </Box>
         );
     }
-
     if (error) {
         return (
             <Container maxWidth="sm" sx={{ mt: 6 }}>
@@ -70,9 +65,7 @@ const NewsView = () => {
             </Container>
         );
     }
-
     if (!noticia) return null;
-
     return (
         <Container maxWidth="md" sx={{ mt: 4, mb: 8 }}>
             <Card
@@ -95,7 +88,6 @@ const NewsView = () => {
                         }}
                     />
                 )}
-
                 <CardContent sx={{ p: { xs: 2, sm: 4 } }}>
                     <Typography variant="h4" fontWeight="bold" gutterBottom>
                         {noticia.titulo}
@@ -133,7 +125,6 @@ const NewsView = () => {
                     </Typography>
                 </CardContent>
             </Card>
-
             <Box display="flex" justifyContent="flex-end" mt={3}>
                 <Button
                     variant="outlined"

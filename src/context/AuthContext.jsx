@@ -36,19 +36,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    // 1. Autenticar al usuario
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
-
-    // 2. Obtener sus datos de Firestore INMEDIATAMENTE
     const data = await getUserData(user.uid);
-
-    // 3. Actualizar el estado del Contexto A MANO
-    // (Esto asegura que userData esté listo ANTES de que termine el 'await' en Login.jsx)
     setUserData(data);
-    setCurrentUser(user); // También actualizamos el currentUser
-
-    return userCredential; // Devolvemos la credencial
+    setCurrentUser(user);
+    return data;
   };
 
   const logout = () => {

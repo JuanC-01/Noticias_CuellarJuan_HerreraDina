@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { getSections } from '../../services/sectionsService';
 import { getPublishedNews } from '../../services/newsService';
 import NewsCarousel from '../../components/NewsCarousel/NewsCarousel';
-import NewsRowCarousel from '../../components/NewsRowCarousel/NewsRowCarousel'; // 👈 nuevo import
+import NewsRowCarousel from '../../components/NewsRowCarousel/NewsRowCarousel';
+import './PublicHome.css';
 
 const PublicHome = () => {
   const [sections, setSections] = useState([]);
@@ -19,10 +20,8 @@ const PublicHome = () => {
           getSections(),
           getPublishedNews()
         ]);
-
         const destacadas = newsData.filter(n => n.destacada);
         const regulares = newsData.filter(n => !n.destacada);
-
         setSections(sectionsData);
         setNoticiasDestacadas(destacadas);
         setNoticiasRegulares(regulares);
@@ -34,17 +33,13 @@ const PublicHome = () => {
 
     fetchData();
   }, []);
-
   if (loading)
     return <div style={{ textAlign: 'center', padding: '40px' }}>📰 Cargando noticias...</div>;
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      {/* 🏆 Carrusel principal de noticias destacadas */}
       <NewsCarousel noticias={noticiasDestacadas} />
       <hr style={{ margin: '30px 0', border: '1px solid #ddd' }} />
-
-      {/* 📰 Secciones con carrusel horizontal */}
       {sections.length > 0 ? (
         sections.map(section => {
           const newsInSection = noticiasRegulares.filter(
@@ -56,6 +51,7 @@ const PublicHome = () => {
           return (
             <section
               key={section.id}
+              className={`section section-${section.slug}`}
               style={{
                 marginBottom: '50px',
                 borderTop: `6px solid ${section.color || '#2196f3'}`,
@@ -78,8 +74,6 @@ const PublicHome = () => {
               >
                 {section.nombre}
               </h2>
-
-              {/* 👇 Carrusel horizontal de noticias por categoría */}
               <NewsRowCarousel noticias={newsInSection} />
             </section>
           );

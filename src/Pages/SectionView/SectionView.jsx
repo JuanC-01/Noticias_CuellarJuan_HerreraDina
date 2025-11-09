@@ -3,14 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getNewsBySectionSlug } from '../../services/newsService';
 import { getSectionBySlug } from '../../services/sectionsService';
 import {
-  Container,
-  Typography,
-  Grid,
-  Box,
-  CircularProgress,
-  Divider,
-  Fade,
-  Pagination,
+  Container, Typography, Grid, Box, CircularProgress, Divider, Fade, Pagination,
 } from '@mui/material';
 import NewsCard from '../../components/NewsCard/NewsCard';
 
@@ -21,7 +14,7 @@ const SectionView = () => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const itemsPerPage = 6;
-
+  
   useEffect(() => {
     const fetchNews = async () => {
       if (!slug) return;
@@ -43,13 +36,11 @@ const SectionView = () => {
 
   const handleChangePage = (event, value) => {
     setPage(value);
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // scroll suave al inicio
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
   const startIndex = (page - 1) * itemsPerPage;
   const paginatedNews = noticias.slice(startIndex, startIndex + itemsPerPage);
   const totalPages = Math.ceil(noticias.length / itemsPerPage);
-
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
@@ -61,7 +52,6 @@ const SectionView = () => {
   return (
     <Fade in timeout={400}>
       <Container maxWidth="lg" sx={{ py: 6 }}>
-        {/* Título de la sección */}
         <Box sx={{ textAlign: 'center', mb: 5 }}>
           <Typography
             variant="h3"
@@ -85,8 +75,6 @@ const SectionView = () => {
             }}
           />
         </Box>
-
-        {/* Grid de noticias */}
         {noticias.length === 0 ? (
           <Typography
             variant="body1"
@@ -132,8 +120,6 @@ const SectionView = () => {
                 </Grid>
               ))}
             </Grid>
-
-            {/* Pagination */}
             {totalPages > 1 && (
               <Box display="flex" justifyContent="center" sx={{ mt: 5 }}>
                 <Pagination

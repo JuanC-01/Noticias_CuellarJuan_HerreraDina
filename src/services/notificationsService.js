@@ -3,20 +3,18 @@ import { collection, addDoc, serverTimestamp, query, where, getDocs, writeBatch,
 import { db } from "./firebase";
 
 /**
- * @param {Array<string>} notificationIds - Un array con los IDs de los documentos de notificación a actualizar.
+ * @param {Array<string>} notificationIds
  * @returns {Promise<void>}
  */
 export const markNotificationsAsRead = async (notificationIds) => {
   if (!notificationIds || notificationIds.length === 0) {
-    return; // No hay nada que marcar
+    return; 
   }
-
-  // Usamos un 'batch write' para actualizar múltiples documentos eficientemente
   const batch = writeBatch(db);
 
   notificationIds.forEach((id) => {
     const notifDocRef = doc(db, "notificaciones", id);
-    batch.update(notifDocRef, { read: true }); // Cambia el campo 'read' a true
+    batch.update(notifDocRef, { read: true }); 
   });
 
   try {
@@ -52,8 +50,6 @@ export const notifyAllEditors = async (data) => {
   try {
     const usersRef = collection(db, 'users');
     const snapshot = await getDocs(usersRef);
-
-    // 🔍 Filtra manualmente los editores
     const editors = snapshot.docs.filter(doc => doc.data().rol === 'editor');
     console.log(`🧩 notifyAllEditors(): encontrados ${editors.length} editores`);
 
@@ -70,9 +66,9 @@ export const notifyAllEditors = async (data) => {
         createdAt: serverTimestamp(),
         read: false,
       });
-      console.log(`✅ Notificación creada para editor: ${editor.nombre}`);
+      console.log(`Notificación creada para editor: ${editor.nombre}`);
     }
   } catch (error) {
-    console.error('❌ Error en notifyAllEditors:', error);
+    console.error('Error en notifyAllEditors:', error);
   }
 };

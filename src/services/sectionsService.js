@@ -1,8 +1,6 @@
 // src/services/sectionsService.js
-
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, where} from "firebase/firestore";
 import { db } from "./firebase"; 
-
 const sectionsCollection = collection(db, "secciones");
 
 /**
@@ -75,8 +73,6 @@ export const getSectionBySlug = async (slug) => {
     console.warn(`No se encontró sección con slug: ${slug}`);
     return null;
   }
-  
-  // Debería haber solo una
   const sectionDoc = querySnapshot.docs[0];
   return { id: sectionDoc.id, ...sectionDoc.data() };
 };

@@ -17,11 +17,11 @@ const SectionForm = ({ onSectionCreated }) => {
     const newSlug = newName
       .toLowerCase()
       .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "") // elimina tildes
-      .replace(/[^a-z0-9]+/g, '-')     // reemplaza espacios y caracteres raros por "-"
-      .replace(/^-+|-+$/g, '');        // elimina guiones al inicio o final
+      .replace(/[\u0300-\u036f]/g, "") 
+      .replace(/[^a-z0-9]+/g, '-')    
+      .replace(/^-+|-+$/g, '');    
 
-    setSlug(newSlug); // ✅ aquí actualizamos el slug
+    setSlug(newSlug);
   };
 
   const handleSubmit = async (e) => {

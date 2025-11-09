@@ -1,30 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Grid,
-    Card,
-    CardContent,
-    CardMedia,
-    Typography,
-    Button,
-    CardActions,
-    Chip,
-    Box,
-    Skeleton,
+    Grid, Card, CardContent, CardMedia, Typography, Button, CardActions, Chip, Box, Skeleton,
 } from '@mui/material';
 import { Edit, Publish, Block, Restore } from '@mui/icons-material';
 import { getAllNews, updateNewsStatus } from '../../services/newsService';
 import { createNotification } from '../../services/notificationsService';
 import { useAuth } from '../../context/AuthContext';
-import { getNewsById } from '../../services/newsService'; 
-
+import { getNewsById } from '../../services/newsService';
 
 const EditorPanel = () => {
     const [noticias, setNoticias] = useState([]);
     const [loading, setLoading] = useState(true);
     const { currentUser, userData } = useAuth();
-
-
     const cargarNoticias = async () => {
         setLoading(true);
         const newsList = await getAllNews();
@@ -45,15 +33,12 @@ const EditorPanel = () => {
 
     const handlePublicar = async (id) => {
         try {
-            // 1️⃣ Publicar noticia
             await updateNewsStatus(id, 'publicado');
-
-            // 2️⃣ Obtener datos de la noticia para saber quién es el autor
             const noticia = await getNewsById(id);
             if (noticia?.autorId) {
                 await createNotification({
-                    userId: noticia.autorId, // destinatario (reportero)
-                    actorId: currentUser.uid, // quien ejecuta (editor)
+                    userId: noticia.autorId,
+                    actorId: currentUser.uid,
                     actorName: userData?.nombre || 'Editor',
                     actorRole: 'editor',
                     type: 'PUBLISHED',
@@ -61,8 +46,6 @@ const EditorPanel = () => {
                     message: `${userData?.nombre || 'Un editor'} publicó tu noticia "${noticia.titulo}".`,
                 });
             }
-
-            // 3️⃣ Recargar
             await cargarNoticias();
         } catch (error) {
             console.error('Error publicando noticia:', error);
@@ -110,7 +93,6 @@ const EditorPanel = () => {
         }
     };
 
-
     return (
         <Box sx={{ p: 4, maxWidth: '1400px', margin: '0 auto' }}>
             <Typography
@@ -152,7 +134,7 @@ const EditorPanel = () => {
                             key={noticia.id}
                             sx={{
                                 display: 'flex',
-                                justifyContent: 'center', // 👈 centra el card
+                                justifyContent: 'center',
                             }}
                         >
                             <Card
@@ -167,12 +149,11 @@ const EditorPanel = () => {
                                         transform: 'translateY(-6px)',
                                         boxShadow: 6,
                                     },
-                                    width: '100%', // 👈 asegura que todas usen el mismo ancho del grid
-                                    maxWidth: 330, // 👈 evita que crezcan más de lo necesario
-                                    height: 480, // 👈 mismo alto
+                                    width: '100%',
+                                    maxWidth: 330,
+                                    height: 480,
                                 }}
                             >
-                                {/* Imagen */}
                                 {noticia.imagenURL ? (
                                     <CardMedia
                                         component="img"
@@ -200,8 +181,6 @@ const EditorPanel = () => {
                                         Sin imagen
                                     </Box>
                                 )}
-
-                                {/* Contenido */}
                                 <CardContent sx={{ flexGrow: 1 }}>
                                     <Typography
                                         variant="h6"
@@ -244,8 +223,6 @@ const EditorPanel = () => {
                                         }}
                                     />
                                 </CardContent>
-
-                                {/* Acciones */}
                                 <CardActions
                                     sx={{
                                         justifyContent: 'space-between',
@@ -259,7 +236,7 @@ const EditorPanel = () => {
                                         size="small"
                                         startIcon={<Edit />}
                                         component={Link}
-                                        to={`/admin/editar/${noticia.id}`}
+                                        to={`/${userData?.rol}-panel/editar/${noticia.id}`}
                                     >
                                         Editar
                                     </Button>

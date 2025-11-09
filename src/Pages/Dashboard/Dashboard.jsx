@@ -2,14 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import {
-  AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem,
-  Badge 
+    AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem,
+    Badge
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import PublicIcon from '@mui/icons-material/Public';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AdbIcon from '@mui/icons-material/Adb';
-import NotificationsIcon from '@mui/icons-material/Notifications'; 
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useAuth } from '../../context/AuthContext';
 import { db } from '../../services/firebase';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
@@ -24,20 +24,17 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
-    const [notificationCount, setNotificationCount] = useState(0);
-    const [notifications, setNotifications] = useState([]);
     const [anchorElNotif, setAnchorElNotif] = useState(null);
-
+    const [notifications, setNotifications] = useState([]);
+    const [notificationCount, setNotificationCount] = useState(0);
     useEffect(() => {
-        if (!currentUser?.uid) return; 
-
+        if (!currentUser?.uid) return;
         const notificationsRef = collection(db, 'notificaciones');
         const q = query(
             notificationsRef,
             where('userId', '==', currentUser.uid),
             where('read', '==', false)
         );
-
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const unreadNotifs = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setNotifications(unreadNotifs);
@@ -45,41 +42,35 @@ const Dashboard = () => {
         }, (error) => {
             console.error("Error escuchando notificaciones:", error);
         });
+        return () => unsubscribe();
+    }, [currentUser?.uid]);
 
-        return () => unsubscribe(); 
-
-    }, [currentUser?.uid]); 
     if (!userData || !currentUser) return <Typography sx={{ p: 4 }}>Cargando usuario...</Typography>;
     const roleColors = {
-        admin: '#2e7d32', 
+        admin: '#2e7d32',
         editor: '#1e1e2f',
-        reportero: '#19d2c3ff', 
+        reportero: '#19d2c3ff',
     };
     const appBarColor = roleColors[userData.rol] || '#1e1e2f';
+    const basePath = `${userData.rol}-panel`;
     const pages = [
-        { name: 'Inicio', path: '/admin' },
-        ...(userData.rol === 'editor' ? [{ name: 'Gestionar Secciones', path: '/admin/secciones' }] : []),
+        { name: '', path: `/${basePath}` },
+        ...(userData.rol === 'editor' ? [{ name: 'Gestionar Secciones', path: `/${basePath}/secciones` }] : []),
     ];
     const settings = [
         { name: 'Ver sitio público', action: () => window.open('/', '_blank'), icon: <PublicIcon sx={{ mr: 1, fontSize: 18 }} /> },
         { name: 'Cerrar sesión', action: async () => { await logout(); navigate('/login'); }, icon: <LogoutIcon sx={{ mr: 1, fontSize: 18 }} /> },
     ];
-
-    // --- Controladores ---
     const handleOpenNavMenu = (event) => setAnchorElNav(event.currentTarget);
     const handleCloseNavMenu = () => setAnchorElNav(null);
     const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
     const handleCloseUserMenu = () => setAnchorElUser(null);
     const handleOpenNotifMenu = (event) => setAnchorElNotif(event.currentTarget);
-
     const handleCloseNotifMenu = () => {
-        setAnchorElNotif(null); 
+        setAnchorElNotif(null);
         if (notifications.length > 0) {
             const notificationIdsToMark = notifications.map(n => n.id);
-            markNotificationsAsRead(notificationIdsToMark)
-                .catch(err => {
-                    console.error("Fallo al marcar notificaciones como leídas:", err);
-                });
+            markNotificationsAsRead(notificationIdsToMark).catch(err => console.error(err));
         }
     };
     return (
@@ -89,12 +80,11 @@ const Dashboard = () => {
                     <Toolbar disableGutters>
                         <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
                         <Typography
-                            variant="h6" noWrap component="a" href="/admin"
-                            sx={{ mr: 2, display: { xs: 'none', md: 'flex' },color: 'inherit', textDecoration: 'none' }}
+                            variant="h6" noWrap component="a" href={`/${basePath}`}
+                            sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, color: 'inherit', textDecoration: 'none' }}
                         >
-                           📰 CMS Noticias
+                            📰 CMS Noticias
                         </Typography>
-
                         <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                             <IconButton size="large" aria-label="menu" onClick={handleOpenNavMenu} color="inherit">
                                 <MenuIcon />
@@ -111,15 +101,6 @@ const Dashboard = () => {
                                 ))}
                             </Menu>
                         </Box>
-
-                        <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-                        <Typography
-                            variant="h6" noWrap component="a" href="/admin"
-                            sx={{ mr: 2, display: { xs: 'flex', md: 'none' }, flexGrow: 1, color: 'inherit', textDecoration: 'none' }}
-                        >
-                            CMS Noticias
-                        </Typography>
-
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                             {pages.map((page) => (
                                 <Button key={page.name} onClick={() => navigate(page.path)} sx={{ my: 2, color: 'white', display: 'block' }}>
@@ -127,10 +108,9 @@ const Dashboard = () => {
                                 </Button>
                             ))}
                         </Box>
-
                         <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 0 }}>
                             <Tooltip title="Notificaciones">
-                                <IconButton size="large" aria-label={`Mostrar ${notificationCount} notificaciones nuevas`} color="inherit" onClick={handleOpenNotifMenu} sx={{ mr: 1 }}> {/* Añadido margen */}
+                                <IconButton size="large" aria-label={`Mostrar ${notificationCount} notificaciones nuevas`} color="inherit" onClick={handleOpenNotifMenu} sx={{ mr: 1 }}>
                                     <Badge badgeContent={notificationCount} color="error">
                                         <NotificationsIcon />
                                     </Badge>
@@ -152,10 +132,9 @@ const Dashboard = () => {
                                     </MenuItem>
                                 )}
                             </Menu>
-
                             <Tooltip title="Opciones de usuario">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar sx={{ bgcolor: appBarColor, width: 32, height: 32 }}> 
+                                    <Avatar sx={{ bgcolor: appBarColor, width: 32, height: 32 }}>
                                         {userData.nombre ? userData.nombre.charAt(0).toUpperCase() : 'U'}
                                     </Avatar>
                                 </IconButton>
@@ -177,7 +156,7 @@ const Dashboard = () => {
                     </Toolbar>
                 </Container>
             </AppBar>
-            <Container maxWidth={false} sx={{ mt: 4, flexGrow: 1 }}> 
+            <Container maxWidth={false} sx={{ mt: 4, flexGrow: 1 }}>
                 <Routes>
                     <Route path="/" element={userData.rol === 'reportero' ? <ReporterPanel /> : <EditorPanel />} />
                     <Route path="crear" element={<NewsForm />} />

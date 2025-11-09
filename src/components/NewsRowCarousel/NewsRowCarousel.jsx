@@ -12,8 +12,6 @@ const NewsRowCarousel = ({ noticias = [] }) => {
 
   const scrollToIndex = (newIndex) => {
     if (!containerRef.current) return;
-
-    // Calcula el desplazamiento horizontal
     const scrollAmount = newIndex * (containerRef.current.offsetWidth / cardsPerView);
     containerRef.current.scrollTo({
       left: scrollAmount,
@@ -24,7 +22,6 @@ const NewsRowCarousel = ({ noticias = [] }) => {
   const handleScroll = (direction) => {
     let newIndex = direction === 'right' ? index + 1 : index - 1;
 
-    // Si llega al final, reinicia al inicio (loop infinito)
     if (newIndex >= total - cardsPerView + 1) newIndex = 0;
     if (newIndex < 0) newIndex = total - cardsPerView;
 
@@ -32,17 +29,14 @@ const NewsRowCarousel = ({ noticias = [] }) => {
     scrollToIndex(newIndex);
   };
 
-  // Corrige el scroll si cambia el tamaño del contenedor (responsive)
   useEffect(() => {
     scrollToIndex(index);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, total]);
 
   if (total === 0) return null;
 
   return (
     <Box sx={{ position: 'relative', width: '100%', overflow: 'hidden', mt: 1 }}>
-      {/* Flecha izquierda */}
       <IconButton
         onClick={() => handleScroll('left')}
         sx={{
@@ -57,8 +51,6 @@ const NewsRowCarousel = ({ noticias = [] }) => {
       >
         <ArrowBackIos />
       </IconButton>
-
-      {/* Contenedor scrollable */}
       <Box
         ref={containerRef}
         sx={{
@@ -83,8 +75,6 @@ const NewsRowCarousel = ({ noticias = [] }) => {
           </Box>
         ))}
       </Box>
-
-      {/* Flecha derecha */}
       <IconButton
         onClick={() => handleScroll('right')}
         sx={{

@@ -23,20 +23,25 @@ const Login = () => {
     const [openModal, setOpenModal] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
-
         if (!email || !password) {
             setError('Por favor, completa todos los campos.');
             return;
         }
         setLoading(true);
         try {
-            await login(email, password);
+            const userData = await login(email, password);
             setLoading(false);
-            navigate('/admin');
+            if (userData.rol === 'editor') {
+                navigate('/editor-panel');
+            } else if (userData.rol === 'reportero') {
+                navigate('/reportero-panel');
+            } else {
+                navigate('/');
+            }
+
         } catch (err) {
             setLoading(false);
             if (err.code === 'auth/user-not-found' ||
@@ -49,7 +54,6 @@ const Login = () => {
             }
         }
     };
-
     const handleOpenModal = (e) => {
         e.preventDefault();
         setOpenModal(true);

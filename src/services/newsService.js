@@ -109,14 +109,10 @@ export const updateNews = (newsId, newsData) => {
 
 export const getNewsBySectionSlug = async (slug) => {
   const newsCollection = collection(db, "noticias");
-  
-  // Consulta que filtra por 'categoria' (slug) y por estado 'publicado'
   const q = query(
     newsCollection, 
     where("categoria", "==", slug),
     where("estado", "==", "publicado")
-    // Opcional: ordenar por fecha
-    // orderBy("fechaCreacion", "desc") 
   );
 
   const querySnapshot = await getDocs(q);

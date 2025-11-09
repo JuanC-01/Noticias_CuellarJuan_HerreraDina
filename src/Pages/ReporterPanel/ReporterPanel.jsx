@@ -3,23 +3,8 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { getNewsByReporter, updateNewsStatus } from '../../services/newsService';
 import {
-    Box,
-    Grid,
-    Card,
-    CardContent,
-    CardActions,
-    Typography,
-    Button,
-    Chip,
-    CircularProgress,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    CardMedia,
-    Tooltip,
-    Skeleton,
+    Box, Grid, Card, CardContent, CardActions, Typography, Button, Chip, CircularProgress, Dialog,
+    DialogActions, DialogContent, DialogContentText, DialogTitle, CardMedia, Tooltip, Skeleton,
 } from '@mui/material';
 import { AddCircleOutline, Edit, Done } from '@mui/icons-material';
 import { notifyAllEditors } from '../../services/notificationsService';
@@ -64,39 +49,35 @@ const ReporterPanel = () => {
     };
 
     const handleConfirmTerminar = async () => {
-  if (!selectedNewsId) return;
-  const noticia = noticias.find(n => n.id === selectedNewsId);
-  if (!noticia) {
-    console.error("No se encontró la noticia para notificar.");
-    handleCloseConfirm();
-    return;
-  }
+        if (!selectedNewsId) return;
+        const noticia = noticias.find(n => n.id === selectedNewsId);
+        if (!noticia) {
+            console.error("No se encontró la noticia para notificar.");
+            handleCloseConfirm();
+            return;
+        }
 
-  try {
-    // 🧩 1️⃣ Cambiar estado de la noticia
-    await updateNewsStatus(selectedNewsId, 'terminado');
+        try {
+            await updateNewsStatus(selectedNewsId, 'terminado');
 
-    // 🧩 2️⃣ Enviar notificación a todos los editores
-    const payload = {
-      actorId: currentUser.uid,
-      actorName: userData?.nombre || 'Reportero',
-      actorRole: userData?.rol || 'reportero',
-      type: 'FINISHED', // 👈 usa un tipo consistente con el de editor
-      newsId: selectedNewsId,
-      message: `${userData?.nombre || 'Un reportero'} ha marcado la noticia "${noticia.titulo}" como terminada.`,
+            const payload = {
+                actorId: currentUser.uid,
+                actorName: userData?.nombre || 'Reportero',
+                actorRole: userData?.rol || 'reportero',
+                type: 'FINISHED',
+                newsId: selectedNewsId,
+                message: `${userData?.nombre || 'Un reportero'} ha marcado la noticia "${noticia.titulo}" como terminada.`,
+            };
+
+            console.log('📨 Notificando editores con payload:', payload);
+            await notifyAllEditors(payload);
+            await cargarNoticias();
+        } catch (error) {
+            console.error('Error al actualizar estado o notificar:', error);
+        }
+
+        handleCloseConfirm();
     };
-
-    console.log('📨 Notificando editores con payload:', payload);
-    await notifyAllEditors(payload);
-
-    // 🧩 3️⃣ Recargar noticias
-    await cargarNoticias();
-  } catch (error) {
-    console.error('Error al actualizar estado o notificar:', error);
-  }
-
-  handleCloseConfirm();
-};
 
 
     const formatFecha = (timestamp) => {
@@ -123,14 +104,13 @@ const ReporterPanel = () => {
 
     return (
         <Box sx={{ p: 4, maxWidth: '1400px', margin: '0 auto' }}>
-            {/* Header */}
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
                 <Typography variant="h4" fontWeight="bold" color="primary">
                     Mis Noticias
                 </Typography>
                 <Button
                     component={Link}
-                    to="/admin/crear"
+                    to={`/${userData?.rol}-panel/crear`}
                     variant="contained"
                     startIcon={<AddCircleOutline />}
                     sx={{
@@ -143,8 +123,6 @@ const ReporterPanel = () => {
                     Crear Nueva
                 </Button>
             </Box>
-
-            {/* Loading */}
             {loading ? (
                 <Grid container spacing={3} justifyContent="center">
                     {Array.from({ length: 8 }).map((_, i) => (
@@ -190,7 +168,6 @@ const ReporterPanel = () => {
                                     height: 480,
                                 }}
                             >
-                                {/* Imagen */}
                                 {noticia.imagenURL ? (
                                     <CardMedia
                                         component="img"
@@ -218,8 +195,6 @@ const ReporterPanel = () => {
                                         Sin imagen
                                     </Box>
                                 )}
-
-                                {/* Contenido */}
                                 <CardContent sx={{ flexGrow: 1 }}>
                                     <Typography
                                         variant="h6"
@@ -250,14 +225,12 @@ const ReporterPanel = () => {
                                         }}
                                     />
                                 </CardContent>
-
-                                {/* Acciones */}
                                 <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
                                     {noticia.estado === 'edicion' ? (
                                         <>
                                             <Button
                                                 component={Link}
-                                                to={`/admin/editar/${noticia.id}`}
+                                                to={`/${userData?.rol}-panel/editar/${noticia.id}`}
                                                 variant="outlined"
                                                 startIcon={<Edit />}
                                                 sx={{ textTransform: 'none' }}
@@ -293,8 +266,6 @@ const ReporterPanel = () => {
                     ))}
                 </Grid>
             )}
-
-            {/* Confirmación */}
             <Dialog
                 open={openConfirm}
                 onClose={handleCloseConfirm}

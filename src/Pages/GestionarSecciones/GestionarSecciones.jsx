@@ -129,7 +129,6 @@ const GestionarSecciones = () => {
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
       <Grid container spacing={3}>
-        {/* === FORMULARIO A LA IZQUIERDA === */}
         <Grid item xs={12} md={4} lg={3}>
           <Card sx={{ p: 3, boxShadow: 4, borderRadius: 3, position: 'sticky', top: 80 }}>
             <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
@@ -144,8 +143,6 @@ const GestionarSecciones = () => {
             }} />
           </Card>
         </Grid>
-
-        {/* === LISTADO DE SECCIONES === */}
         <Grid item xs={12} md={8} lg={9}>
           {loading && sections.length === 0 ? (
             <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
@@ -235,7 +232,6 @@ const GestionarSecciones = () => {
         </Grid>
       </Grid>
 
-      {/* === Diálogo de Confirmación === */}
       <Dialog open={openDeleteConfirm} onClose={handleCloseDeleteConfirm}>
         <DialogTitle>Confirmar Eliminación</DialogTitle>
         <DialogContent>
@@ -250,8 +246,6 @@ const GestionarSecciones = () => {
           </Button>
         </DialogActions>
       </Dialog>
-
-      {/* === Snackbar === */}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}

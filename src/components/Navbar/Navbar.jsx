@@ -16,29 +16,20 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { getSections } from '../../services/sectionsService';
-
 function Navbar() {
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [anchorElNav, setAnchorElNav] = useState(null);
+    const [anchorElUser, setAnchorElUser] = useState(null);
     const { currentUser, userData, logout } = useAuth();
     const navigate = useNavigate();
-    const handleOpenNavMenu = (event) => {
-        setAnchorElNav(event.currentTarget);
-    };
-    const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
-    };
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
-    };
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
+    const handleOpenNavMenu = (event) => setAnchorElNav(event.currentTarget);
+    const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
+    const handleCloseNavMenu = () => setAnchorElNav(null);
+    const handleCloseUserMenu = () => setAnchorElUser(null);
     const handleGoToDashboard = () => {
         handleCloseUserMenu();
-        navigate('/admin');
+        if (!userData?.rol) return;
+        navigate(`/${userData.rol}-panel`);
     };
-
     const handleLogout = async () => {
         handleCloseUserMenu();
         try {
@@ -48,19 +39,21 @@ function Navbar() {
             console.error("Error al cerrar sesión", error);
         }
     };
-
     const [sections, setSections] = useState([]);
-
-  useEffect(() => {
-    const cargarSecciones = async () => {
-      const data = await getSections();
-      setSections(data);
+    useEffect(() => {
+        const cargarSecciones = async () => {
+            const data = await getSections();
+            setSections(data);
+        };
+        cargarSecciones();
+    }, []);
+    const rolColors = {
+        editor: '#1e1e2f',
+        reportero: '#19d2c3ff',
     };
-    cargarSecciones();
-  }, [])
-
+    const appBarColor = rolColors[userData?.rol] || '#333';
     return (
-        <AppBar position="static">
+        <AppBar position="static" sx={{ bgcolor: appBarColor }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -127,30 +120,18 @@ function Navbar() {
                     >
                         NOTICIAS
                     </Typography>
-
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        <Button
-                            component={Link}
-                            to="/"
-                            onClick={handleCloseNavMenu}
-                            sx={{ my: 2, color: 'white', display: 'block' }}
-                        >
-                            Inicio
-                        </Button>
-                         {sections.map((section) => (
-                        <Button
-                            key={section.id}
-                           component={Link}
-                            to={`/seccion/${section.slug}`} // <-- Define la ruta dinámica
-                            color="inherit"
-                        >
-                            {section.nombre} {/* Muestra el nombre */}
-                        </Button>
-                    ))}
+                        {sections.map((section) => (
+                            <Button
+                                key={section.id}
+                                component={Link}
+                                to={`/seccion/${section.slug}`}
+                                color="inherit"
+                            >
+                                {section.nombre}
+                            </Button>
+                        ))}
                     </Box>
-
-                   
-
                     <Box sx={{ flexGrow: 0 }}>
                         {currentUser ? (
                             <>

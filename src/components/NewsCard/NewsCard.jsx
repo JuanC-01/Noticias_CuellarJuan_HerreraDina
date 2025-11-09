@@ -16,7 +16,7 @@ const NewsCard = ({ noticia }) => {
     <Card
       sx={{
         width: 320,
-        height: 420, // ✅ altura fija para todas
+        height: 420, 
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -30,7 +30,6 @@ const NewsCard = ({ noticia }) => {
         },
       }}
     >
-      {/* Imagen */}
       <CardMedia
         component="img"
         height="180"
@@ -42,8 +41,6 @@ const NewsCard = ({ noticia }) => {
           borderTopRightRadius: 12,
         }}
       />
-
-      {/* Contenido */}
       <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
         <Typography
           variant="h6"
@@ -53,7 +50,7 @@ const NewsCard = ({ noticia }) => {
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             display: '-webkit-box',
-            WebkitLineClamp: 2, // ✅ solo 2 líneas
+            WebkitLineClamp: 2, 
             WebkitBoxOrient: 'vertical',
           }}
         >
@@ -68,7 +65,7 @@ const NewsCard = ({ noticia }) => {
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             display: '-webkit-box',
-            WebkitLineClamp: 2, // ✅ 2 líneas de subtítulo
+            WebkitLineClamp: 2, 
             WebkitBoxOrient: 'vertical',
           }}
         >
@@ -81,8 +78,6 @@ const NewsCard = ({ noticia }) => {
           </Typography>
         </Box>
       </CardContent>
-
-      {/* Botón */}
       <CardActions sx={{ justifyContent: 'center', pb: 2 }}>
         <Button
           component={Link}

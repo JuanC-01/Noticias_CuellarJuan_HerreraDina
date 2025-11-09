@@ -114,7 +114,8 @@ const NewsForm = () => {
             }
 
             setLoading(false);
-            navigate('/admin');
+            navigate(`/${userData.rol}-panel`);
+
 
         } catch (err) {
             console.error(err);
@@ -248,7 +249,7 @@ const NewsForm = () => {
                         </Button>
                         <Button
                             variant="outlined"
-                            onClick={() => navigate('/admin')}
+                            onClick={() => navigate(`/${userData.rol}-panel`)}
                             disabled={loading}
                             startIcon={<Cancel />}
                         >
