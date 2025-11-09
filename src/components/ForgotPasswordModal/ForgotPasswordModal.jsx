@@ -1,4 +1,3 @@
-// src/components/ForgotPasswordModal/ForgotPasswordModal.jsx
 import React, { useState } from 'react';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../services/firebase';

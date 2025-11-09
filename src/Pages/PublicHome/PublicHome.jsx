@@ -1,4 +1,3 @@
-// src/Pages/PublicHome/PublicHome.jsx
 import React, { useState, useEffect } from 'react';
 import { getSections } from '../../services/sectionsService';
 import { getPublishedNews } from '../../services/newsService';

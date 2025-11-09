@@ -1,4 +1,3 @@
-// src/components/Footer/Footer.jsx
 import React from 'react';
 import { Box, Container, Typography, IconButton, Stack } from '@mui/material';
 import { Facebook, Twitter, Instagram, LinkedIn } from '@mui/icons-material';
@@ -11,7 +10,7 @@ const Footer = () => {
         editor: '#1e1e2f',
         reportero: '#19d2c3ff',
     };
-    const backgroundColor = rolColors[userData?.rol] || '#333'; 
+    const backgroundColor = rolColors[userData?.rol] || '#333';
     return (
         <Box
             component="footer"
@@ -30,7 +29,8 @@ const Footer = () => {
                     spacing={2}
                 >
                     <Typography variant="body1">
-                        &copy; {new Date().getFullYear()} CMS Noticias. Todos los derechos reservados.
+                        &copy; {new Date().getFullYear()}
+                        Instant News. Todos los derechos reservados.
                     </Typography>
 
                     <Stack direction="row" spacing={1}>

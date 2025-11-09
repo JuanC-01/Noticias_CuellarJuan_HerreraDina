@@ -1,4 +1,3 @@
-// src/services/sectionsService.js
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, where} from "firebase/firestore";
 import { db } from "./firebase"; 
 const sectionsCollection = collection(db, "secciones");

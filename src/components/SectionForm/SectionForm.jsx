@@ -1,4 +1,3 @@
-// src/components/SectionForm/SectionForm.jsx
 import React, { useState } from 'react';
 import { createSection } from '../../services/sectionsService';
 import { TextField, Button, Box, FormLabel, CircularProgress, Typography, Alert } from '@mui/material';

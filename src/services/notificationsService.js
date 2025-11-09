@@ -1,4 +1,3 @@
-// src/services/notificationsService.js
 import { collection, addDoc, serverTimestamp, query, where, getDocs, writeBatch, doc} from "firebase/firestore";
 import { db } from "./firebase";
 

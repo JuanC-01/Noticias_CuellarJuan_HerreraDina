@@ -1,4 +1,3 @@
-// src/pages/GestionarSecciones/GestionarSecciones.jsx
 import React, { useState, useEffect } from 'react';
 import {
   Box, Typography, Grid, Card, CardContent, CardActions, Button,

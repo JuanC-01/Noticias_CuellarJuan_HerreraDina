@@ -29,11 +29,11 @@ export const AuthProvider = ({ children }) => {
     return unsubscribe;
   }, []);
 
-  const register = async (email, password, nombre) => {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    await createUserData(user.uid, email, nombre);
-  };
+  const register = async (email, password, nombre, rol) => { 
+  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  const user = userCredential.user;
+  await createUserData(user.uid, email, nombre, rol); 
+};
 
   const login = async (email, password) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);

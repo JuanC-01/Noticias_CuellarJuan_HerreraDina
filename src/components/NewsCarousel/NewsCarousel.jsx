@@ -1,4 +1,3 @@
-// src/components/NewsCarousel/NewsCarousel.jsx
 import React from 'react';
 import Slider from 'react-slick';
 import { CardMedia, Typography, Box, Paper, Chip } from '@mui/material';

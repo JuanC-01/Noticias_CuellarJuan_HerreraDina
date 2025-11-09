@@ -1,4 +1,3 @@
-// src/services/usersService.js
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "./firebase"; 
 
@@ -28,13 +27,13 @@ export const getUserData = async (uid) => {
  * @param {string} email - Email del usuario.
  * @param {string} nombre - Nombre del usuario.
  */
-export const createUserData = async (uid, email, nombre) => {
+export const createUserData = async (uid, email, nombre, rol) => {
   try {
     const userDocRef = doc(db, "usuarios", uid);
     await setDoc(userDocRef, {
       email: email,
       nombre: nombre,
-      rol: "reportero" 
+      rol: rol,
     });
   } catch (error) {
     console.error("Error al crear datos del usuario:", error);
