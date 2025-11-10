@@ -14,7 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { getSections } from '../../services/sectionsService';
-import logo from '../../assets/logo.png'; 
+import logo from '../../assets/logo2.png';
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -53,10 +53,10 @@ function Navbar() {
   }, []);
 
   const rolColors = {
-    editor: '#1e1e2f',
-    reportero: '#19d2c3ff',
+    editor: '#325834ff',
+    reportero: '#344b7eff',
   };
-  const appBarColor = rolColors[userData?.rol] || '#333';
+  const appBarColor = rolColors[userData?.rol] || '#810303ff';
 
   return (
     <AppBar position="static" sx={{ bgcolor: appBarColor }}>
@@ -132,14 +132,22 @@ function Navbar() {
                 key={section.id}
                 component={Link}
                 to={`/seccion/${section.slug}`}
-                color="inherit"
+                sx={{
+                  color: '#ffffffff',
+                  fontSize: '26px',
+                  fontWeight: 'bold',
+                  textTransform: 'none',
+                  '&:hover': {
+                    color: '#be4131ff',
+                  },
+                }}
               >
                 {section.nombre}
               </Button>
             ))}
           </Box>
 
-          {/* 🔹 Usuario */}
+
           <Box sx={{ flexGrow: 0 }}>
             {currentUser ? (
               <>
@@ -172,7 +180,15 @@ function Navbar() {
               <Button
                 component={Link}
                 to="/login"
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{
+                  color: '#ffffffff',
+                  fontSize: '20px',
+                  fontWeight: 'bold',
+                  textTransform: 'none',
+                  '&:hover': {
+                    color: '#31be5bff',
+                  },
+                }}
               >
                 Iniciar Sesión
               </Button>

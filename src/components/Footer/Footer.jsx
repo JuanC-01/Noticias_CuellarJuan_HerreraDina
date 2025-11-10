@@ -7,10 +7,10 @@ const Footer = () => {
     const { userData } = useAuth();
 
     const rolColors = {
-        editor: '#1e1e2f',
-        reportero: '#19d2c3ff',
+        editor: '#325834ff',
+        reportero: '#344b7eff',
     };
-    const backgroundColor = rolColors[userData?.rol] || '#333';
+    const backgroundColor = rolColors[userData?.rol] || '#810303ff';
     return (
         <Box
             component="footer"
@@ -30,7 +30,7 @@ const Footer = () => {
                 >
                     <Typography variant="body1">
                         &copy; {new Date().getFullYear()}
-                        Instant News. Todos los derechos reservados.
+                        La Fogata. Todos los derechos reservados.
                     </Typography>
 
                     <Stack direction="row" spacing={1}>

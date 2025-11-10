@@ -130,15 +130,15 @@ const EditorPanel = () => {
     };
 
     const contarPorEstado = (estadoKey) => {
-    const filtradas = noticias.filter((n) => {
-        const coincideReportero =
-            filtroReportero === "todos" || n.autorNombre === filtroReportero;
-        const coincideEstado =
-            estadoKey === "todos" || n.estado === estadoKey;
-        return coincideReportero && coincideEstado;
-    });
-    return filtradas.length;
-};
+        const filtradas = noticias.filter((n) => {
+            const coincideReportero =
+                filtroReportero === "todos" || n.autorNombre === filtroReportero;
+            const coincideEstado =
+                estadoKey === "todos" || n.estado === estadoKey;
+            return coincideReportero && coincideEstado;
+        });
+        return filtradas.length;
+    };
 
 
     return (
@@ -148,10 +148,15 @@ const EditorPanel = () => {
                 align="center"
                 gutterBottom
                 fontWeight="bold"
-                color="primary"
+                sx={{
+                    color: '#000000ff',
+                    fontSize: '2rem',
+                    letterSpacing: '1px',
+                }}
             >
                 Gestión de Noticias
             </Typography>
+
 
             <Box display="flex" flexWrap="wrap" justifyContent="space-between" mb={3} gap={2}>
                 <Tabs

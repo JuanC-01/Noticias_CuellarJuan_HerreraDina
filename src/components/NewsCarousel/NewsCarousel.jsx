@@ -26,9 +26,14 @@ const NewsCarousel = ({ noticias }) => {
 
     return (
         <Box sx={{ mb: 4, padding: { xs: '0', sm: '0 20px' } }}>
-            <Typography variant="h4" gutterBottom sx={{ pl: { xs: 2, sm: 0 } }}>
+            <Typography
+                variant="h4"
+                gutterBottom
+                sx={{ pl: { xs: 2, sm: 0 }, fontWeight: 'bold' }}
+            >
                 Noticias Destacadas
             </Typography>
+
             <Slider {...settings}>
                 {noticias.map((noticia) => (
                     <Paper

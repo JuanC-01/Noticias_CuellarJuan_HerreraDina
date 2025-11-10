@@ -4,13 +4,13 @@ import { useAuth } from "../../context/AuthContext";
 import {
     Avatar, Button, CssBaseline, TextField, Link, Grid, Box, Typography, Container, Alert, CircularProgress, FormControl, InputLabel, Select, MenuItem, Paper,
 } from "@mui/material";
-import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import logo from '../../assets/regist.png';
 
 const Register = () => {
     const [nombre, setNombre] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [rol, setRol] = useState("reportero"); 
+    const [rol, setRol] = useState("reportero");
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const { register } = useAuth();
@@ -57,7 +57,7 @@ const Register = () => {
                     mt: 8,
                     p: 4,
                     borderRadius: 3,
-                    background: "linear-gradient(180deg, #ffffff 0%, #f5f7fb 100%)",
+                    background: "linear-gradient(180deg, #ffffffff 0%, #f5f7fb 100%)",
                 }}
             >
                 <Box
@@ -67,9 +67,22 @@ const Register = () => {
                         alignItems: "center",
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-                        <AppRegistrationIcon />
-                    </Avatar>
+                    <Avatar
+                        alt="Logo"
+                        src={logo}
+                        sx={{
+                            m: 1,
+                            width: 90,
+                            height: 90,
+                            boxShadow: 3,
+                            bgcolor: 'white',
+                            p: 1,
+                            borderRadius: '50%',
+                            border: '3px solid #810303ff'
+                        }}
+
+                    />
+
                     <Typography component="h1" variant="h5" fontWeight="600">
                         Crear nueva cuenta
                     </Typography>
@@ -151,13 +164,13 @@ const Register = () => {
                             sx={{
                                 mt: 3,
                                 mb: 2,
-                                py: 1.2,
+                                py: 1.3,
+                                fontWeight: 'bold',
+                                fontSize: '1rem',
                                 borderRadius: 2,
-                                textTransform: "none",
-                                fontWeight: "bold",
-                                transition: "0.3s",
-                                "&:hover": {
-                                    transform: "scale(1.03)",
+                                backgroundColor: '#000000ff',
+                                '&:hover': {
+                                    backgroundColor: '#c62828',
                                 },
                             }}
                             disabled={loading}

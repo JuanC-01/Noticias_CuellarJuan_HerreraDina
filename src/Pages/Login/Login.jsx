@@ -1,19 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+import {
+    Avatar, Button, CssBaseline, TextField, Link, Grid, Box, Typography, Container, Alert, CircularProgress, Paper,
+} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Alert from '@mui/material/Alert';
-import CircularProgress from '@mui/material/CircularProgress';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal/ForgotPasswordModal';
+import logo from '../../assets/login.png';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -23,6 +16,7 @@ const Login = () => {
     const [openModal, setOpenModal] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
@@ -34,19 +28,16 @@ const Login = () => {
         try {
             const userData = await login(email, password);
             setLoading(false);
-            if (userData.rol === 'editor') {
-                navigate('/editor-panel');
-            } else if (userData.rol === 'reportero') {
-                navigate('/reportero-panel');
-            } else {
-                navigate('/');
-            }
-
+            if (userData.rol === 'editor') navigate('/editor-panel');
+            else if (userData.rol === 'reportero') navigate('/reportero-panel');
+            else navigate('/');
         } catch (err) {
             setLoading(false);
-            if (err.code === 'auth/user-not-found' ||
+            if (
+                err.code === 'auth/user-not-found' ||
                 err.code === 'auth/wrong-password' ||
-                err.code === 'auth/invalid-credential') {
+                err.code === 'auth/invalid-credential'
+            ) {
                 setError('El correo o la contraseña son incorrectos.');
             } else {
                 console.error(err);
@@ -54,31 +45,55 @@ const Login = () => {
             }
         }
     };
-    const handleOpenModal = (e) => {
-        e.preventDefault();
-        setOpenModal(true);
-    };
 
-    const handleCloseModal = () => {
-        setOpenModal(false);
-    };
     return (
         <>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
-                <Box
+                <Paper
+                    elevation={6}
                     sx={{
-                        marginTop: 8,
+                        mt: 8,
+                        p: 4,
+                        borderRadius: 3,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
+                        background: 'linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%)',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
+                    <Avatar
+                        alt="Logo"
+                        src={logo}
+                        sx={{
+                            m: 1,
+                            width: 90,
+                            height: 90,
+                            boxShadow: 3,
+                            bgcolor: 'white',
+                            p: 1,
+                            borderRadius: '50%',
+                            border: '3px solid #810303ff'
+                        }}
+
+                    />
+
+                    <Typography
+                        component="h1"
+                        variant="h5"
+                        align="center"
+                        gutterBottom
+                        fontWeight="bold"
+                        sx={{
+                            color: '#810303ff',
+                            fontSize: '2rem',
+                            letterSpacing: '1px',
+                        }}
+                    >
                         Iniciar Sesión
+                    </Typography>
+                    <Typography variant="body2" color="text.primary" sx={{ mb: 2 }}>
+                        Accede a tu cuenta para continuar
                     </Typography>
 
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -119,39 +134,46 @@ const Login = () => {
                             type="submit"
                             fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                            sx={{
+                                mt: 3,
+                                mb: 2,
+                                py: 1.3,
+                                fontWeight: 'bold',
+                                fontSize: '1rem',
+                                borderRadius: 2,
+                                backgroundColor: '#000000ff',
+                                '&:hover': {
+                                    backgroundColor: '#c62828', 
+                                },
+                            }}
                             disabled={loading}
                         >
                             {loading ? <CircularProgress size={24} color="inherit" /> : 'Iniciar Sesión'}
                         </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link
-                                    href="#"
-                                    variant="body2"
-                                    onClick={handleOpenModal}
-                                >
+
+
+                        <Grid container spacing={1}>
+                            <Grid item xs={12} textAlign="center">
+                                <Link href="#" variant="body2" onClick={(e) => setOpenModal(true)}>
                                     ¿Olvidaste tu contraseña?
                                 </Link>
                             </Grid>
-                            <Grid item>
+                            <Grid item xs={12} textAlign="center">
                                 <Link component={RouterLink} to="/register" variant="body2">
-                                    {"¿No tienes una cuenta? Regístrate aquí"}
+                                    ¿No tienes una cuenta? Regístrate aquí
                                 </Link>
                             </Grid>
-                            <Grid item xs={12} sx={{ textAlign: 'center', mt: 2 }}>
-                                <Link component={RouterLink} to="/" variant="body2">
-                                    {"← Volver al Inicio"}
+                            <Grid item xs={12} textAlign="center" sx={{ mt: 2 }}>
+                                <Link component={RouterLink} to="/" variant="body2" color="text.secondary">
+                                    ← Volver al Inicio
                                 </Link>
                             </Grid>
                         </Grid>
                     </Box>
-                </Box>
+                </Paper>
             </Container>
-            <ForgotPasswordModal
-                open={openModal}
-                handleClose={handleCloseModal}
-            />
+
+            <ForgotPasswordModal open={openModal} handleClose={() => setOpenModal(false)} />
         </>
     );
 };

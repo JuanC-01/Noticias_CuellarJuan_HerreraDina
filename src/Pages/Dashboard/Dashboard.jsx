@@ -16,7 +16,7 @@ import EditorPanel from '../EditorPanel/EditorPanel';
 import NewsForm from '../../components/NewsForm/NewsForm';
 import GestionarSecciones from '../GestionarSecciones/GestionarSecciones';
 import { markNotificationsAsRead } from '../../services/notificationsService';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo2.png';
 
 const Dashboard = () => {
     const { currentUser, userData, logout } = useAuth();
@@ -61,8 +61,8 @@ const Dashboard = () => {
 
     const roleColors = {
         admin: '#2e7d32',
-        editor: '#1e1e2f',
-        reportero: '#19d2c3ff',
+        editor: '#325834ff',
+        reportero: '#344b7eff',
     };
 
     const appBarColor = roleColors[userData.rol] || '#1e1e2f';
@@ -175,7 +175,17 @@ const Dashboard = () => {
                                 <Button
                                     key={page.name}
                                     onClick={() => navigate(page.path)}
-                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                    sx={{
+                                        my: 2,
+                                        color: 'white',
+                                        display: 'block',
+                                        fontSize: '22px',
+                                        fontWeight: 'bold',
+                                        textTransform: 'none',
+                                        '&:hover': {
+                                            color: '#ffffffff',
+                                        },
+                                    }}
                                 >
                                     {page.name}
                                 </Button>
